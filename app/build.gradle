@@ -7,7 +7,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.enty.wearosapp"
+        applicationId "com.harman.wearosapp"
         minSdk 30
         targetSdk 32
         versionCode 1
