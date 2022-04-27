@@ -1,8 +1,9 @@
-package com.enty.wearosapp
+package com.harman.wearosapp.app
 
 import android.app.Activity
 import android.os.Bundle
-import com.enty.wearosapp.databinding.ActivityMainBinding
+import com.harman.wearosapp.app.databinding.ActivityMainBinding
+
 
 class MainActivity : Activity() {
 
