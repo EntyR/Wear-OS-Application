@@ -34,4 +34,20 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.wear:wear:1.2.0'
+
+    
+
+    implementation("androidx.wear:wear-phone-interactions:1.1.0-alpha03")
+
+    implementation("androidx.wear.watchface:watchface:1.1.0-beta01")
+
+    implementation "androidx.wear.watchface:watchface-complications-data-source:1.1.0-beta01"
+    implementation "androidx.wear.watchface:watchface-complications-data-source-ktx:1.1.0-beta01"
+
+    implementation("androidx.wear.watchface:watchface-editor:1.1.0-beta01")
+    implementation 'androidx.wear.watchface:watchface-complications-rendering:1.0.1'
+    implementation 'androidx.datastore:datastore-core:1.0.0'
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "androidx.wear.watchface:watchface-complications-data-source-ktx:1.1.0-beta01"
+
 }
