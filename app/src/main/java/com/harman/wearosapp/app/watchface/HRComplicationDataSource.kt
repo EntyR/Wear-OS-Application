@@ -7,11 +7,16 @@ import com.harman.wearosapp.app.R
 
 /**
  * Provides a value from data to be displayed on complication.
- *
+ * Send Heart rate data from database when update is requested by services
+ * what write HR updates into database
  * TODO display value from data base
  */
 class HRComplicationDataSource : SuspendingComplicationDataSourceService() {
 
+    /*
+     * Provides a preview to be displayed in select complication screen,
+     * in this WatchFace doesn't used (type of complication is fixed on HR complication)
+     */
     override fun getPreviewData(type: ComplicationType): ComplicationData {
         return ShortTextComplicationData.Builder(
             text = PlainComplicationText.Builder(text = "60").build(),
@@ -20,6 +25,10 @@ class HRComplicationDataSource : SuspendingComplicationDataSourceService() {
         ).setTapAction(null).build()
     }
 
+
+    /*
+    * Sends value to complication when requested from other elements or by system
+    */
     override suspend fun onComplicationRequest(request: ComplicationRequest): ComplicationData? {
 
         //TODO replace with real value

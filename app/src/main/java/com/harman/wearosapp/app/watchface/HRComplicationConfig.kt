@@ -19,6 +19,7 @@ import com.harman.wearosapp.app.other.*
 
 /**
  * Base config class for all complications in WatchFace.
+ * only register top complication slot
  */
 sealed class HRComplicationConfig(val id: Int, val supportedTypes: List<ComplicationType>) {
     object Left : HRComplicationConfig(
@@ -56,6 +57,11 @@ fun createComplicationSlotManager(
             )
         }
 
+    /*
+     * Complication is fixed to receive value only from HRComplicationDataSource class
+     * with SHORT_TEXT complication Type
+     * extend defaultDataSourcePolicy to allow other complication
+     */
     val topComplication = ComplicationSlot.createRoundRectComplicationSlotBuilder(
         id = HRComplicationConfig.Left.id,
         canvasComplicationFactory = defaultCanvasComplicationFactory,
@@ -63,8 +69,8 @@ fun createComplicationSlotManager(
         defaultDataSourcePolicy = DefaultComplicationDataSourcePolicy(
             ComponentName(context, HRComplicationDataSource::class.java),
             ComplicationType.SHORT_TEXT,
-            SystemDataSources.DATA_SOURCE_DAY_OF_WEEK,
-            ComplicationType.SHORT_TEXT
+            SystemDataSources.NO_DATA_SOURCE,
+            ComplicationType.NO_DATA
         ),
         bounds = ComplicationSlotBounds(
             RectF(

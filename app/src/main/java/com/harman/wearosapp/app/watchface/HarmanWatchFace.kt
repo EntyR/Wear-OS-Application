@@ -8,7 +8,7 @@ import androidx.wear.watchface.style.CurrentUserStyleRepository
 import com.harman.wearosapp.app.MainActivity
 
 
-class HRWatchFace : WatchFaceService() {
+class HarmanWatchFace : WatchFaceService() {
 
     override fun createComplicationSlotsManager(currentUserStyleRepository: CurrentUserStyleRepository): ComplicationSlotsManager {
         return createComplicationSlotManager(context = this, currentUserStyleRepository)
@@ -38,7 +38,7 @@ class HRWatchFace : WatchFaceService() {
         ) {
             if (tapType != TapType.CANCEL && tapType != TapType.DOWN){
                 val intent = Intent(
-                    this@HRWatchFace, MainActivity::class.java
+                    this@HarmanWatchFace, MainActivity::class.java
                 ).setFlags(FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }

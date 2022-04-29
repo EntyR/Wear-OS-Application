@@ -54,7 +54,7 @@
         </service>
 
         <service
-            android:name=".watchface.HRWatchFace"
+            android:name=".watchface.HarmanWatchFace"
             android:label="@string/my_analog_name"
             android:directBootAware="true"
             android:permission="android.permission.BIND_WALLPAPER"
