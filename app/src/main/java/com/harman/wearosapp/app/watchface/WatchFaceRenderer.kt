@@ -16,14 +16,12 @@ private const val FRAME_PERIOD_MS_DEFAULT: Long = 16L
 
 /**
  * Render class for Harman WatchFace class
- * @param complicationSlotsManager custom complication slot manager
  * TODO migrate to Render2
  */
 class HeartRateRenderer(
     private val context: Context,
     surfaceHolder: SurfaceHolder,
     watchState: WatchState,
-    private val complicationSlotsManager: ComplicationSlotsManager,
     currentUserStyleRepository: CurrentUserStyleRepository,
     canvasType: Int
 ) : Renderer.CanvasRenderer(
@@ -57,11 +55,6 @@ class HeartRateRenderer(
 
     override fun renderHighlightLayer(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime) {
         canvas.drawColor(renderParameters.highlightLayer!!.backgroundTint)
-        complicationSlotsManager.complicationSlots.forEach { (_, complication) ->
-            if (complication.enabled) {
-                complication.renderHighlightLayer(canvas, zonedDateTime, renderParameters)
-            }
-        }
     }
 
     private val dateWithoutTimeFormatter = DateTimeFormatter.ofPattern("LLL dd yyyy")
@@ -110,11 +103,7 @@ class HeartRateRenderer(
             canvas.drawText(zonedDateTime.format(dateWithoutTimeFormatter), baseOffset + timeWidth+periodWidth,
                 (bounds.exactCenterY()*1.56f+height/2), datePaint)
         }
-        complicationSlotsManager.complicationSlots.forEach { (_, complication) ->
-            if (complication.enabled) {
-                complication.render(canvas, zonedDateTime, renderParameters)
-            }
-        }
+
 
     }
 

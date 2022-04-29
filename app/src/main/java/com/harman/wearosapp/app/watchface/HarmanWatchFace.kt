@@ -10,9 +10,7 @@ import com.harman.wearosapp.app.MainActivity
 
 class HarmanWatchFace : WatchFaceService() {
 
-    override fun createComplicationSlotsManager(currentUserStyleRepository: CurrentUserStyleRepository): ComplicationSlotsManager {
-        return createComplicationSlotManager(context = this, currentUserStyleRepository)
-    }
+
 
 
     override suspend fun createWatchFace(
@@ -26,7 +24,6 @@ class HarmanWatchFace : WatchFaceService() {
             this,
             surfaceHolder,
             watchState,
-            complicationSlotsManager,
             currentUserStyleRepository,
             CanvasType.HARDWARE
         )
