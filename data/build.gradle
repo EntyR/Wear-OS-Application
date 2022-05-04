@@ -39,5 +39,14 @@ android {
 }
 
 dependencies {
+    implementation(project(":domain"))
+
+    implementation "androidx.health:health-services-client:1.0.0-alpha03"
+    implementation 'com.google.guava:guava:29.0-android'
+
+    implementation("io.insert-koin:koin-core:3.1.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
+
+
 
 }
