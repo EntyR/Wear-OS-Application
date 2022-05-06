@@ -1,12 +1,10 @@
 package com.harman.wearosapp.app.ui.feature_screen
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatButton
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -16,7 +14,6 @@ import androidx.wear.widget.WearableLinearLayoutManager
 import com.harman.wearosapp.app.R
 import com.harman.wearosapp.app.adapter.FeatureListAdapter
 import com.harman.wearosapp.app.databinding.FragmentAppFeatureListBinding
-import com.harman.wearosapp.app.ui.hr_export_screen.ExportActivity
 import com.harman.wearosapp.domain.model.FeatureModel
 import kotlin.math.abs
 
@@ -84,8 +81,7 @@ class FeatureListFragment : Fragment() {
     private fun startActivity(destinationID: Int) {
         when (destinationID) {
             Destinations.HRRecord.destinationId -> {
-                val intent = Intent(requireContext(), ExportActivity::class.java)
-                ActivityCompat.startActivity(requireContext(), intent, null)
+
             }
         }
     }
