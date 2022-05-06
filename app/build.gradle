@@ -38,7 +38,7 @@ dependencies {
     implementation 'androidx.wear:wear:1.2.0'
 
     implementation 'com.google.android.material:material:1.5.0'
-    
+
 
     implementation("androidx.wear:wear-phone-interactions:1.1.0-alpha03")
 
@@ -58,6 +58,8 @@ dependencies {
 
     implementation(project(":domain"))
     implementation(project(":data"))
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
 
 
 }
