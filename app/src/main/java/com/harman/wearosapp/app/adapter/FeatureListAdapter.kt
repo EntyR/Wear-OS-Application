@@ -1,7 +1,10 @@
 package com.harman.wearosapp.app.adapter
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.marginTop
 import androidx.core.view.updateMargins
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -12,7 +15,7 @@ import com.harman.wearosapp.domain.model.FeatureModel
 class FeatureListAdapter(
     val onItemPressedCallBack: (featureId: Int) -> Unit
 ) : ListAdapter<FeatureModel, FeatureListAdapter.FeatureListViewHolder>(Companion) {
-    private val noItemOffset = 110
+
 
     class FeatureListViewHolder(val binding: FeatureListItemBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -34,17 +37,32 @@ class FeatureListAdapter(
 
 
     override fun onBindViewHolder(holder: FeatureListViewHolder, position: Int) {
+        val height = Resources.getSystem().displayMetrics.heightPixels
+
+        holder.binding.btFeatureButton.apply {
+            val params = this.layoutParams as ConstraintLayout.LayoutParams
+            params.height = height/3
+            textSize =
+                (height / 18).toFloat() / Resources.getSystem().displayMetrics.scaledDensity
+            layoutParams = params
+
+        }
+
+
+
         val currentFeature = currentList[position]
         val layoutParams = holder.binding.root.layoutParams as ViewGroup.MarginLayoutParams
         holder.binding.btFeatureButton.text = currentList[position].name
         holder.binding.btFeatureButton.setOnClickListener {
             onItemPressedCallBack(currentFeature.id)
         }
+        layoutParams.updateMargins(top = height/50, bottom = height/50)
+        val noItemOffset = height /2.8
         if (currentFeature.id == 0) {
-            layoutParams.updateMargins(top = noItemOffset)
+            layoutParams.updateMargins(top = noItemOffset.toInt())
         }
         if (currentFeature.id == currentList.size - 1) {
-            layoutParams.updateMargins(bottom = noItemOffset)
+            layoutParams.updateMargins(bottom = noItemOffset.toInt())
         }
     }
 }
