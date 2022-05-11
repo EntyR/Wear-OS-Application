@@ -4,18 +4,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.harman.wearosapp.app.R
+import com.harman.wearosapp.app.databinding.FragmentSuccessBinding
 
 
 class SuccessFragment : Fragment() {
 
+    private lateinit var binding: FragmentSuccessBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_success, container, false)
+    ): View {
+        binding = FragmentSuccessBinding.inflate(inflater, container, false)
+        val screenWidth = resources.configuration.screenWidthDp
+        val textSize =
+            screenWidth / 17 * resources.configuration.fontScale
+        val ivParams = binding.ivPulc.layoutParams as ConstraintLayout.LayoutParams
+
+        binding.tvMessage.textSize = textSize
+        ivParams.width = (screenWidth / 1.5).toInt()
+        return binding.root
     }
 
     companion object {

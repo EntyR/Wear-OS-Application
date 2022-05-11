@@ -1,10 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.wear.widget.CircularProgressLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/circularProgressBar"
+    android:id="@+id/waitingContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.hr_export_screen.WaitingFragment">
 
+    <com.harman.wearosapp.app.view.CircularSpinningView
+        android:id="@+id/circularSpinningView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-</androidx.wear.widget.CircularProgressLayout>
+    <TextView
+        android:id="@+id/tvExportMesage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
+        android:text="@string/exporting_data_as_csv"
+        android:textColor="@color/purple_primary"
+        android:lines="1"
+        app:layout_constraintBottom_toTopOf="@+id/circularSpinningView"
+        app:layout_constraintEnd_toStartOf="@+id/circularSpinningView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/circularSpinningView"
+        app:layout_constraintTop_toBottomOf="@+id/circularSpinningView" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

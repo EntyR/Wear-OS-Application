@@ -7,39 +7,35 @@
     tools:context=".ui.hr_export_screen.SubmitFragment">
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button"
+        android:id="@+id/btSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_export_confirm_button"
+        android:fontFamily="@font/roboto_medium"
         android:minHeight="0dp"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="10dp"
         android:text="@string/confirm"
+        android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.87"
+        app:layout_constraintTop_toBottomOf="@+id/tvMessage"
         tools:ignore="TouchTargetSizeCheck" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvMessage"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="32dp"
+        android:layout_height="wrap_content"
+
         android:fontFamily="@font/roboto_medium"
         android:gravity="center_horizontal|bottom"
         android:text="@string/export_warning"
         android:textColor="@color/purple_primary"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:textSize="16sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
