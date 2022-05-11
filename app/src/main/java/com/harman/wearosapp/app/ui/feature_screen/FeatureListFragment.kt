@@ -38,14 +38,8 @@ class FeatureListFragment : Fragment() {
                     relativeToCenter = y / parent.height + offset
                     progressToCenter = abs(0.5f - relativeToCenter)
                     val button = findViewById<AppCompatButton>(R.id.btFeatureButton)
-                    button.background = if (progressToCenter < 0.15f) ContextCompat.getDrawable(
-                        requireContext(),
-                        R.drawable.selector_feature_list_item
-                    )
-                    else ContextCompat.getDrawable(
-                        requireContext(),
-                        R.drawable.selector_feature_list_item_dark
-                    )
+                    button.background.alpha = if (progressToCenter < 0.15f) 255
+                    else 100
                 }
             }
         }

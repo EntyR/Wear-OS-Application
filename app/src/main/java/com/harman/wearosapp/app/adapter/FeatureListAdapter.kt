@@ -41,14 +41,12 @@ class FeatureListAdapter(
 
         holder.binding.btFeatureButton.apply {
             val params = this.layoutParams as ConstraintLayout.LayoutParams
-            params.height = height/3
+            params.height = (height/3.4).toInt()
             textSize =
                 (height / 18).toFloat() / Resources.getSystem().displayMetrics.scaledDensity
             layoutParams = params
 
         }
-
-
 
         val currentFeature = currentList[position]
         val layoutParams = holder.binding.root.layoutParams as ViewGroup.MarginLayoutParams
