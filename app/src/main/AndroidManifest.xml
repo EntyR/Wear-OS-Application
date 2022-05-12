@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <uses-feature android:name="android.hardware.type.watch" />
+
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="com.google.android.wearable.permission.RECEIVE_COMPLICATION_DATA" />
 
@@ -15,6 +16,7 @@
         android:supportsRtl="true"
         android:name=".HeartRateApplication"
         android:theme="@style/AppTheme">
+
         <uses-library
             android:name="com.google.android.wearable"
             android:required="true" />
@@ -25,34 +27,23 @@
         <activity
             android:name=".ui.hr_export_screen.ExportActivity"
             android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <!-- TODO Change back before merge only for test-->
         <activity
-            android:name="com.harman.wearosapp.app.MainActivity"
+             android:name=".ui.feature_screen.FeatureListActivity"
             android:exported="true"
             android:label="@string/app_name">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+           <intent-filter>
+               <action android:name="android.intent.action.MAIN" />
+               <category android:name="android.intent.category.LAUNCHER" />
+           </intent-filter>
         </activity>
-
-
 
         <service
             android:name=".watchface.HarmanWatchFace"
-            android:label="@string/my_analog_name"
             android:directBootAware="true"
-            android:permission="android.permission.BIND_WALLPAPER"
-            android:exported="true">
-
-
+            android:exported="true"
+            android:label="@string/my_analog_name"
+            android:permission="android.permission.BIND_WALLPAPER">
             <meta-data
                 android:name="android.service.wallpaper.square_mode"
                 android:value="false" />
@@ -72,7 +63,6 @@
                 <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>
