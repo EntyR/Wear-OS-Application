@@ -6,8 +6,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="mesure_hr">Measure HR</string>
     <string name="export_hr">Export HR data</string>
-    <string name="export_warning">All HR data will be exported to a public folder and then removed</string>
+    <string name="export_warning">All HR data will be\nexported to a public folder\nand then removed</string>
     <string name="confirm">Confirm</string>
-    <string name="exporting_data_as_csv">Exporting data as .csv ...</string>
-    <string name="successfully_exported_hr_data">Successfully exported HR data!</string>
+    <string name="exporting_data_as_csv">Exporting data as .csv …</string>
+    <string name="successfully_exported_hr_data">Successfully exported\nHR data!</string>
 </resources>

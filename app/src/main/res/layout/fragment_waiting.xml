@@ -17,6 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_medium"
+        android:autoSizeTextType="uniform"
         android:text="@string/exporting_data_as_csv"
         android:textColor="@color/purple_primary"
         android:lines="1"

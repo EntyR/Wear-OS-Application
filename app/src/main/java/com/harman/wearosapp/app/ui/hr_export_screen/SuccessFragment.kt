@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import com.harman.wearosapp.app.R
 import com.harman.wearosapp.app.databinding.FragmentSuccessBinding
 
 
@@ -18,13 +17,19 @@ class SuccessFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSuccessBinding.inflate(inflater, container, false)
-        val screenWidth = resources.configuration.screenWidthDp
-        val textSize =
-            screenWidth / 17 * resources.configuration.fontScale
-        val ivParams = binding.ivPulc.layoutParams as ConstraintLayout.LayoutParams
 
-        binding.tvMessage.textSize = textSize
-        ivParams.width = (screenWidth / 1.5).toInt()
+        binding.root.post {
+            val screenWidth = binding.root.width
+            val screenHeight = binding.root.height
+
+            binding.tvMessage.apply {
+                height = screenHeight / 6
+            }
+            val ivParams = binding.ivPulc.layoutParams as ConstraintLayout.LayoutParams
+            ivParams.width = screenWidth / 3
+        }
+
+
         return binding.root
     }
 

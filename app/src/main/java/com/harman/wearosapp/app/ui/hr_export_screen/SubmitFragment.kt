@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
 import com.harman.wearosapp.app.databinding.FragmentExportBinding
 import com.harman.wearosapp.app.other.WAITING_TRANSACTION
@@ -20,30 +19,35 @@ class SubmitFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentExportBinding.inflate(inflater, container, false)
-        val screenWidth = resources.configuration.screenWidthDp
-        val textSize =
-            screenWidth / 17 * resources.configuration.fontScale
 
-        binding.tvMessage.apply {
-            val tvMarginParams = layoutParams as ViewGroup.MarginLayoutParams
-            tvMarginParams.updateMargins(left = screenWidth/5, right = screenWidth/5)
-            this.textSize = textSize
-        }
+        binding.root.post {
+            val screenWidth = binding.root.width
+            val screenHeight = binding.root.height
+            val textSize =
+                screenHeight / 33 * resources.configuration.fontScale
 
+            binding.tvMessage.apply {
+                height = (screenHeight / 3.5).toInt()
 
-        binding.btSubmit.apply {
-            this.textSize = textSize
-            setOnClickListener {
-                ExportActivity.navigateTo(
-                    WaitingFragment.newInstance(),
-                    WAITING_TRANSACTION,
-                    parentFragmentManager
-                )
             }
-            val btnParam = layoutParams as ConstraintLayout.LayoutParams
-            btnParam.width = (screenWidth / 1.4).toInt()
-            btnParam.height = (screenWidth / 3.8).toInt()
+
+
+
+            binding.btSubmit.apply {
+                this.textSize = textSize
+                setOnClickListener {
+                    ExportActivity.navigateTo(
+                        WaitingFragment.newInstance(),
+                        WAITING_TRANSACTION,
+                        parentFragmentManager
+                    )
+                }
+                val btnParam = layoutParams as ConstraintLayout.LayoutParams
+                btnParam.width = (screenWidth / 2.4).toInt()
+                btnParam.height = screenHeight / 6
+            }
         }
+
 
 
         return binding.root
