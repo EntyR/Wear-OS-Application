@@ -41,9 +41,9 @@ class FeatureListAdapter(
 
         holder.binding.btFeatureButton.apply {
             val params = this.layoutParams as ConstraintLayout.LayoutParams
-            params.height = (height/3.4).toInt()
+            params.height = (height/2.7).toInt()
             textSize =
-                (height / 18).toFloat() / Resources.getSystem().displayMetrics.scaledDensity
+                (height / 17).toFloat() / Resources.getSystem().displayMetrics.scaledDensity
             layoutParams = params
 
         }
@@ -54,10 +54,10 @@ class FeatureListAdapter(
         holder.binding.btFeatureButton.setOnClickListener {
             onItemPressedCallBack(currentFeature.id)
         }
-        layoutParams.updateMargins(top = height/50, bottom = height/50)
-        val noItemOffset = height /2.8
+        layoutParams.updateMargins(top = height/50)
+        val noItemOffset = (height -height /2.7) / 2
         if (currentFeature.id == 0) {
-            layoutParams.updateMargins(top = noItemOffset.toInt())
+            layoutParams.updateMargins(top = (noItemOffset+height/50).toInt())
         }
         if (currentFeature.id == currentList.size - 1) {
             layoutParams.updateMargins(bottom = noItemOffset.toInt())
