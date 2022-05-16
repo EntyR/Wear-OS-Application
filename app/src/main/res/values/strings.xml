@@ -11,5 +11,11 @@
     <string name="confirm">Confirm</string>
     <string name="exporting_data_as_csv">Exporting data as .csv …</string>
     <string name="successfully_exported_hr_data">Successfully exported\nHR data!</string>
+    <string name="start">Start</string>
+    <string name="start_continuous_heart_rate_measurements">Start continuous heart rate\nmeasurements</string>
+    <string name="stop">Stop</string>
+    <string name="no_records">---</string>
+    <string name="heart_rate_cd">Heart Rate</string>
+    <string name="start_record_cd">Start Record</string>
 
 </resources>

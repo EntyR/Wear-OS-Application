@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.hr_export_screen.SubmitFragment">
+
+    <ImageView
+        android:id="@+id/ivStartRecord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/heart_rate_start_icon"
+        app:layout_constraintTop_toBottomOf="@id/tvStartRecord"
+        app:layout_constraintEnd_toEndOf="@id/tvStartRecord"
+        app:layout_constraintStart_toStartOf="@id/tvStartRecord"
+        app:layout_constraintBottom_toBottomOf="@id/chScatterChart"
+        android:contentDescription="@string/start_record_cd" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clHeartRate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/chScatterChart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.32999998">
+
+        <TextView
+            android:id="@+id/tvRate"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:autoSizeTextType="uniform"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center_vertical"
+            android:textColor="@color/purple_primary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.62"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="69" />
+
+        <ImageView
+            android:id="@+id/ivHeartIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/heart_rate_cd"
+            android:scaleType="centerInside"
+            android:src="@drawable/heart_icon"
+            app:layout_constraintBottom_toBottomOf="@id/tvRate"
+            app:layout_constraintEnd_toStartOf="@id/tvRate"
+            app:layout_constraintTop_toTopOf="@id/tvRate" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chScatterChart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_export_confirm_button"
+        android:fontFamily="@font/roboto_medium"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:autoSizeTextType="uniform"
+        android:text="@string/start"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/chScatterChart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/tvStartRecord"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoSizeTextType="uniform"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="center_horizontal|bottom"
+        android:lineSpacingExtra="3dp"
+        android:text="@string/start_continuous_heart_rate_measurements"
+        android:textColor="@color/purple_primary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.49"
+        tools:textSize="16sp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
