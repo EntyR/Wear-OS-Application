@@ -34,6 +34,12 @@ class HeartRateFragment : Fragment() {
     ): View {
         binding = FragmentHeartRateBinding.inflate(inflater, container, false)
 
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.root.post {
 
             val screenWidth = binding.root.width
@@ -143,7 +149,6 @@ class HeartRateFragment : Fragment() {
                 }
             }
         }
-        return binding.root
     }
 
 
