@@ -1,38 +1,37 @@
 package com.harman.wearosapp.app.hr_service
 
-import android.content.ComponentName
 import android.content.Context
 import android.util.Log
-import androidx.concurrent.futures.await
 import androidx.health.services.client.HealthServicesClient
-import androidx.health.services.client.data.DataType
-import androidx.health.services.client.data.PassiveMonitoringConfig
+import androidx.health.services.client.MeasureCallback
+import androidx.health.services.client.data.*
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.trySendBlocking
+import kotlinx.coroutines.flow.callbackFlow
 
 class HealthServicesManager(
-    private val context: Context,
-    healthServicesClient: HealthServicesClient
+    private val healthServicesClient: HealthServicesClient
 ) {
-    private val passiveMonitoringClient = healthServicesClient.passiveMonitoringClient
 
-    suspend fun hasHeartRateCapability(): Boolean {
-        val capabilities = passiveMonitoringClient.capabilities.await()
-        return (DataType.HEART_RATE_BPM in capabilities.supportedDataTypesPassiveMonitoring)
+    fun heartRateMeasureFlow() = callbackFlow {
+        val callback = object : MeasureCallback {
+            override fun onAvailabilityChanged(dataType: DataType, availability: Availability) =
+                Unit
+
+            override fun onData(data: List<DataPoint>) {
+                trySendBlocking(data)
+            }
+        }
+
+        Log.d(TAG, "Registering for data")
+        healthServicesClient.measureClient.registerCallback(DataType.HEART_RATE_BPM, callback)
+
+        awaitClose {
+            Log.d(TAG, "Unregistering for data")
+            healthServicesClient.measureClient.unregisterCallback(DataType.HEART_RATE_BPM, callback)
+        }
     }
 
-    suspend fun registerForHeartRateData() {
-        Log.i(TAG, "Registering for background data.")
-        val componentName = ComponentName(context, HRBroadcastReceiver::class.java)
-        val config = PassiveMonitoringConfig.builder()
-            .setDataTypes(setOf(DataType.HEART_RATE_BPM))
-            .setComponentName(componentName)
-            .build()
-        passiveMonitoringClient.registerDataCallback(config).await()
-    }
-
-    suspend fun unregisterForHeartRateData() {
-        Log.i(TAG, "Unregistering for background data.")
-        passiveMonitoringClient.unregisterDataCallback().await()
-    }
 
     companion object {
         const val TAG = "HealthServicesManager"

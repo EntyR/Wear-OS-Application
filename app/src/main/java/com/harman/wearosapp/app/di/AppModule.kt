@@ -12,7 +12,7 @@ val dataModule = module {
     single {
         HealthServices.getClient(androidContext())
     }
-    single { HealthServicesManager(androidContext(), get()) }
+    single { HealthServicesManager(get()) }
 
     single<IHealthRepository> {
         HealthRepository()

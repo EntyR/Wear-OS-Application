@@ -1,11 +1,15 @@
 package com.harman.wearosapp.app.ui.heart_rate_screen
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
@@ -16,10 +20,13 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.harman.wearosapp.app.R
 import com.harman.wearosapp.app.databinding.FragmentHeartRateBinding
+import com.harman.wearosapp.app.hr_service.HRService
+import com.harman.wearosapp.app.hr_service.HealthServicesManager
 import com.harman.wearosapp.app.other.ChartValueFormatter
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
 class HeartRateFragment : Fragment() {
 
@@ -30,12 +37,28 @@ class HeartRateFragment : Fragment() {
     private val fakeData = MutableLiveData<List<Entry>>()
     private val recordState = MutableLiveData(RecordState.Stopped)
 
+    private lateinit var permissionLauncher: ActivityResultLauncher<String>
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHeartRateBinding.inflate(inflater, container, false)
 
+        permissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
+                when (result) {
+                    true -> {
+                        Log.i("TAG", "Body sensors permission granted")
+                        requireActivity().startForegroundService(
+                            Intent(requireContext(), HRService::class.java)
+                        )
+                    }
+                    false -> {
+                        Log.i("TAG", "Body sensors permission not granted")
+                    }
+                }
+            }
 
         return binding.root
     }
@@ -137,6 +160,9 @@ class HeartRateFragment : Fragment() {
             //TODO Observe for real hr censor values
             var job: Job? = null
             setOnClickListener {
+
+                askForPermission()
+
                 when (recordState.value) {
                     RecordState.Stopped -> job = lifecycleScope.launch {
                         startRecording()
@@ -186,6 +212,11 @@ class HeartRateFragment : Fragment() {
             delay(1000)
         }
         switchRecordState()
+    }
+
+
+    private fun askForPermission() {
+        permissionLauncher.launch(android.Manifest.permission.BODY_SENSORS)
     }
 
 

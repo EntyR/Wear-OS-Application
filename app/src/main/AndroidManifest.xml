@@ -6,34 +6,35 @@
         <package android:name="com.google.android.wearable.healthservices" />
     </queries>
 
-
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <uses-permission android:name="android.permission.BODY_SENSORS" />
-
     <uses-feature android:name="android.hardware.type.watch" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="com.google.android.wearable.permission.RECEIVE_COMPLICATION_DATA" />
 
     <application
+        android:name=".HeartRateApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".hr_service.HRService"
+            android:enabled="true"
+            android:exported="false" />
+
         <activity
             android:name=".ui.heart_rate_screen.HeartRateActivity"
-            android:exported="false" >
-        </activity>
-
-        <receiver
-            android:name=".hr_service.HRBroadcastReceiver"
-            android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="hs.passivemonitoring.DATA" />
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </receiver>
+        </activity>
 
         <uses-library
             android:name="com.google.android.wearable"
@@ -45,29 +46,27 @@
 
         <activity
             android:name=".ui.hr_export_screen.ExportActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".ui.feature_screen.FeatureListActivity"
             android:exported="true"
             android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!-- TODO Only for tests -->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
-
-
 
         <service
             android:name=".watchface.HarmanWatchFace"
-            android:label="@string/my_analog_name"
             android:directBootAware="true"
-            android:permission="android.permission.BIND_WALLPAPER"
-            android:exported="true">
-
-
+            android:exported="true"
+            android:label="@string/my_analog_name"
+            android:permission="android.permission.BIND_WALLPAPER">
             <meta-data
                 android:name="android.service.wallpaper.square_mode"
                 android:value="false" />
@@ -87,7 +86,6 @@
                 <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>
