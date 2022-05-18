@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="false">
+        <layer-list>
+            <item>
+                <shape>
+                    <corners android:radius="45dp" />
+                    <stroke android:width="5dp"/>
+                    <solid android:color="@color/purple_dark" />
+                </shape>
+            </item>
+            <item android:bottom="7dp" android:end="7dp" android:start="7dp" android:top="7dp">
+                <shape>
+                    <corners android:radius="40dp" />
+                    <stroke android:width="5dp"/>
+                    <solid android:color="@color/purple_dark" />
+                </shape>
+            </item>
+        </layer-list>
+
+    </item>
+    <item android:state_pressed="true">
+        <layer-list>
+            <item>
+                <shape>
+                    <corners android:radius="45dp" />
+                    <stroke android:width="5dp" android:color="@color/purple_dark"/>
+                    <solid android:color="@color/black" />
+                </shape>
+            </item>
+
+        </layer-list>
+    </item>
+</selector>
