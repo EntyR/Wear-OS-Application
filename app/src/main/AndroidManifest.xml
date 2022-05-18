@@ -24,7 +24,8 @@
         <service
             android:name=".hr_service.HRService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="dataSync"/>
 
         <activity
             android:name=".ui.heart_rate_screen.HeartRateActivity"

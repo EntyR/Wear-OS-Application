@@ -9,6 +9,8 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.asLiveData
+import androidx.wear.ongoing.OngoingActivity
+import androidx.wear.ongoing.Status
 import com.harman.wearosapp.app.R
 import com.harman.wearosapp.app.other.NOTIFICATION_ID
 import com.harman.wearosapp.app.other.SENSOR_CHANNEL_ID
@@ -23,7 +25,7 @@ class HRService : LifecycleService(), KoinComponent {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
 
-        return START_NOT_STICKY
+        return START_STICKY
     }
 
     override fun onCreate() {
@@ -44,10 +46,21 @@ class HRService : LifecycleService(), KoinComponent {
             .setSmallIcon(R.mipmap.ic_launcher)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setContentIntent(pendingIntent)
+
+
+        val ongoingActivityStatus = Status.Builder()
             .build()
 
-        startForeground(NOTIFICATION_ID, notification)
+        val ongoingActivity =
+            OngoingActivity.Builder(applicationContext, NOTIFICATION_ID, notification)
+                .setStaticIcon(R.drawable.ic_heart)
+                .setTouchIntent(pendingIntent)
+                .setStatus(ongoingActivityStatus)
+                .build()
 
+        ongoingActivity.apply(applicationContext)
+
+        startForeground(NOTIFICATION_ID, notification.build())
 
         healthServicesManager.heartRateMeasureFlow().asLiveData().observe(this) {
 

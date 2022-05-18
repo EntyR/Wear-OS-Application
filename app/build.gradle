@@ -77,4 +77,6 @@ dependencies {
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'androidx.lifecycle:lifecycle-service:2.4.1'
+
+    implementation 'androidx.wear:wear-ongoing:1.0.0'
 }
