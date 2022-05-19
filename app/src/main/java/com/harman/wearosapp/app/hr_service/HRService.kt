@@ -30,8 +30,6 @@ class HRService : LifecycleService(), KoinComponent {
     private val hrUseCase: HRUseCase by inject()
     private val dispatcher: CoroutineDispatcher by inject()
 
-    lateinit var wakeLock: PowerManager.WakeLock
-
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
@@ -41,12 +39,6 @@ class HRService : LifecycleService(), KoinComponent {
 
     override fun onCreate() {
         super.onCreate()
-        wakeLock =
-            (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
-                newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyApp::MyWakelockTag").apply {
-                    acquire()
-                }
-            }
 
         (getSystemService(Context.POWER_SERVICE) as PowerManager).addThermalStatusListener {
             Log.d(TAG, "onCreate: $it")
@@ -96,10 +88,6 @@ class HRService : LifecycleService(), KoinComponent {
 
     }
 
-    override fun onDestroy() {
-        wakeLock.release()
-        super.onDestroy()
-    }
     companion object {
         const val TAG = "HRService"
     }
