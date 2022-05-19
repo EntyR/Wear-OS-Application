@@ -21,12 +21,10 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.harman.wearosapp.app.R
 import com.harman.wearosapp.app.databinding.FragmentHeartRateBinding
 import com.harman.wearosapp.app.hr_service.HRService
-import com.harman.wearosapp.app.hr_service.HealthServicesManager
 import com.harman.wearosapp.app.other.ChartValueFormatter
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 
 class HeartRateFragment : Fragment() {
 

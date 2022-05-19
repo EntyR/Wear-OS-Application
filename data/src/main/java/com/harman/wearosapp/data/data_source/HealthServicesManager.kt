@@ -1,6 +1,5 @@
-package com.harman.wearosapp.app.hr_service
+package com.harman.wearosapp.data.data_source
 
-import android.content.Context
 import android.util.Log
 import androidx.health.services.client.HealthServicesClient
 import androidx.health.services.client.MeasureCallback

@@ -16,12 +16,14 @@ import com.harman.wearosapp.app.R
 import com.harman.wearosapp.app.other.NOTIFICATION_ID
 import com.harman.wearosapp.app.other.SENSOR_CHANNEL_ID
 import com.harman.wearosapp.app.ui.heart_rate_screen.HeartRateActivity
+import com.harman.wearosapp.data.data_source.HealthServicesManager
+import com.harman.wearosapp.domain.use_cases.HRUseCase
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 
 class HRService : LifecycleService(), KoinComponent {
 
-    private val healthServicesManager: HealthServicesManager by inject()
+    private val hrUseCase: HRUseCase by inject()
 
     lateinit var  wakeLock: PowerManager.WakeLock
 
@@ -76,11 +78,10 @@ class HRService : LifecycleService(), KoinComponent {
 
         startForeground(NOTIFICATION_ID, notification.build())
 
-        healthServicesManager.heartRateMeasureFlow().asLiveData().observe(this) {
+        hrUseCase.receiveHeartRateMeasurement().asLiveData().observe(this) {
 
             //TODO save records into db
-            val lastHRRecord = it.last().value.asDouble()
-            Log.d(TAG, "onCreate: $lastHRRecord")
+            Log.d(TAG, "onCreate: $it")
         }
 
     }

@@ -6,4 +6,5 @@ class HRUseCase(private val repository: IHealthRepository) {
     suspend fun saveHRRecord(hrRecord: Double){
         repository.saveHRValueToDb(hrRecord)
     }
+    fun receiveHeartRateMeasurement() = repository.getHRFlow()
 }

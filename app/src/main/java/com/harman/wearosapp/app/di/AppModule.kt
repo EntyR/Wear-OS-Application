@@ -1,7 +1,7 @@
 package com.harman.wearosapp.app.di
 
 import androidx.health.services.client.HealthServices
-import com.harman.wearosapp.app.hr_service.HealthServicesManager
+import com.harman.wearosapp.data.data_source.HealthServicesManager
 import com.harman.wearosapp.data.repository.HealthRepository
 import com.harman.wearosapp.domain.repository.IHealthRepository
 import com.harman.wearosapp.domain.use_cases.HRUseCase
@@ -15,7 +15,7 @@ val dataModule = module {
     single { HealthServicesManager(get()) }
 
     single<IHealthRepository> {
-        HealthRepository()
+        HealthRepository(get())
     }
 }
 

@@ -16,7 +16,6 @@ class HeartRateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHeartRateBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         val fragment = HeartRateFragment.newInstance()
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
