@@ -86,8 +86,8 @@ class HRService : LifecycleService(), KoinComponent {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         wakeLock.release()
+        super.onDestroy()
     }
     companion object {
         const val TAG = "HRService"
