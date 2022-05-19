@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
@@ -22,6 +23,9 @@ class HRService : LifecycleService(), KoinComponent {
 
     private val healthServicesManager: HealthServicesManager by inject()
 
+    lateinit var  wakeLock: PowerManager.WakeLock
+
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
 
@@ -30,6 +34,16 @@ class HRService : LifecycleService(), KoinComponent {
 
     override fun onCreate() {
         super.onCreate()
+        wakeLock =
+            (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
+                newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyApp::MyWakelockTag").apply {
+                    acquire()
+                }
+            }
+
+        (getSystemService(Context.POWER_SERVICE) as PowerManager).addThermalStatusListener {
+            Log.d(TAG, "onCreate: $it")
+        }
         val onPressIntent = Intent(this, HeartRateActivity::class.java)
         val pendingIntent =
             PendingIntent.getActivity(this, 1, onPressIntent, PendingIntent.FLAG_IMMUTABLE)
@@ -71,6 +85,10 @@ class HRService : LifecycleService(), KoinComponent {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        wakeLock.release()
+    }
     companion object {
         const val TAG = "HRService"
     }
