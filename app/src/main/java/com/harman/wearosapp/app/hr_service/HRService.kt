@@ -16,7 +16,6 @@ import com.harman.wearosapp.app.R
 import com.harman.wearosapp.app.other.NOTIFICATION_ID
 import com.harman.wearosapp.app.other.SENSOR_CHANNEL_ID
 import com.harman.wearosapp.app.ui.heart_rate_screen.HeartRateActivity
-import com.harman.wearosapp.data.data_source.HealthServicesManager
 import com.harman.wearosapp.domain.use_cases.HRUseCase
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
@@ -24,8 +23,6 @@ import org.koin.core.component.KoinComponent
 class HRService : LifecycleService(), KoinComponent {
 
     private val hrUseCase: HRUseCase by inject()
-
-    lateinit var  wakeLock: PowerManager.WakeLock
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -36,12 +33,6 @@ class HRService : LifecycleService(), KoinComponent {
 
     override fun onCreate() {
         super.onCreate()
-        wakeLock =
-            (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
-                newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyApp::MyWakelockTag").apply {
-                    acquire()
-                }
-            }
 
         (getSystemService(Context.POWER_SERVICE) as PowerManager).addThermalStatusListener {
             Log.d(TAG, "onCreate: $it")
@@ -86,10 +77,6 @@ class HRService : LifecycleService(), KoinComponent {
 
     }
 
-    override fun onDestroy() {
-        wakeLock.release()
-        super.onDestroy()
-    }
     companion object {
         const val TAG = "HRService"
     }
