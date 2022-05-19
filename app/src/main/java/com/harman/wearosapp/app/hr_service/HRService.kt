@@ -10,22 +10,27 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.wear.ongoing.OngoingActivity
 import androidx.wear.ongoing.Status
 import com.harman.wearosapp.app.R
 import com.harman.wearosapp.app.other.NOTIFICATION_ID
 import com.harman.wearosapp.app.other.SENSOR_CHANNEL_ID
 import com.harman.wearosapp.app.ui.heart_rate_screen.HeartRateActivity
-import com.harman.wearosapp.data.data_source.HealthServicesManager
+import com.harman.wearosapp.domain.model.HRRecordModel
 import com.harman.wearosapp.domain.use_cases.HRUseCase
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
+import java.time.Clock
 
 class HRService : LifecycleService(), KoinComponent {
 
     private val hrUseCase: HRUseCase by inject()
+    private val dispatcher: CoroutineDispatcher by inject()
 
-    lateinit var  wakeLock: PowerManager.WakeLock
+    lateinit var wakeLock: PowerManager.WakeLock
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -78,10 +83,15 @@ class HRService : LifecycleService(), KoinComponent {
 
         startForeground(NOTIFICATION_ID, notification.build())
 
-        hrUseCase.receiveHeartRateMeasurement().asLiveData().observe(this) {
-
-            //TODO save records into db
-            Log.d(TAG, "onCreate: $it")
+        hrUseCase.receiveHeartRateCensorMeasurement().asLiveData().observe(this) {
+            lifecycleScope.launch(dispatcher) {
+                hrUseCase.saveHRRecord(
+                    HRRecordModel(
+                        it.last(),
+                        Clock.systemUTC().millis()
+                    )
+                )
+            }
         }
 
     }
