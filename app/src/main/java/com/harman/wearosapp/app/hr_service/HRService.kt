@@ -75,6 +75,10 @@ class HRService : LifecycleService(), KoinComponent {
 
         startForeground(NOTIFICATION_ID, notification.build())
 
+        lifecycleScope.launchWhenCreated {
+            hrUseCase.deletePreviousValue()
+        }
+
         hrUseCase.receiveHeartRateCensorMeasurement().asLiveData().observe(this) {
             lifecycleScope.launch(dispatcher) {
                 hrUseCase.saveHRRecord(

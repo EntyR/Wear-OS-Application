@@ -13,9 +13,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -23,23 +20,14 @@ import com.harman.wearosapp.app.R
 import com.harman.wearosapp.app.databinding.FragmentHeartRateBinding
 import com.harman.wearosapp.app.hr_service.HRService
 import com.harman.wearosapp.app.other.ChartValueFormatter
-import com.harman.wearosapp.domain.use_cases.HRUseCase
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HeartRateFragment : Fragment() {
 
 
     private lateinit var binding: FragmentHeartRateBinding
 
-    //TODO move to view model later on
-    private val hrUseCase: HRUseCase by inject()
-
-    //TODO Test values observe value from view model later on
-    private val fakeData = MutableLiveData<List<Entry>>()
-    private val recordState = MutableLiveData(RecordState.Stopped)
+    private val viewModel: HeartRateViewModel by viewModel()
 
     private lateinit var permissionLauncher: ActivityResultLauncher<String>
 
@@ -76,6 +64,12 @@ class HeartRateFragment : Fragment() {
 
         binding.tvStartRecord.height = (screenHeight / 5.5).toInt()
 
+        binding.tvWaitingForResult.apply {
+            val params = layoutParams as ConstraintLayout.LayoutParams
+            params.height = screenHeight / 7
+            layoutParams = params
+            (layoutParams as ViewGroup.MarginLayoutParams).leftMargin = (screenWidth / 3.3).toInt()
+        }
 
         binding.ivStartRecord.apply {
             val params = layoutParams as ConstraintLayout.LayoutParams
@@ -107,11 +101,9 @@ class HeartRateFragment : Fragment() {
             description.isEnabled = false
             legend.isEnabled = false
 
-            //TODO Use x axis max value from hr records time
-            xAxis.axisMaximum = 20F
-            //TODO change value for maximum possible hr record
-            axisLeft.axisMaximum = 30f
-            axisLeft.axisMinimum = 0f
+
+            axisLeft.axisMaximum = 200f
+            axisLeft.axisMinimum = 40f
 
             val layoutParam = layoutParams as ConstraintLayout.LayoutParams
             layoutParam.height = (screenHeight / 2.5).toInt()
@@ -119,41 +111,62 @@ class HeartRateFragment : Fragment() {
         }
 
 
-        fakeData.observe(viewLifecycleOwner) {
-            if (it.isEmpty()) return@observe
-            binding.chScatterChart.data = LineData(getDataSet(it))
+        viewModel.receiveHeartRateMeasurement().observe(viewLifecycleOwner) { list ->
+            if (list.isEmpty() || viewModel.recordState.value == RecordState.Stopped) return@observe
+            viewModel.switchRecordState(RecordState.Ongoing)
 
-            if (it.size > 1) {
-                binding.tvRate.text = it.last().y.toInt().toString()
+            binding.chScatterChart.data = LineData(getDataSet(list))
+
+            binding.chScatterChart.xAxis.axisMaximum = list.last().x + 10 - list.size
+            binding.chScatterChart.xAxis.axisMinimum = list.first().x - 1
+
+            if (list.size > 1) {
+                binding.tvRate.text = list.last().y.toInt().toString()
                 binding.chScatterChart.invalidate()
             }
+
         }
 
 
-        recordState.observe(viewLifecycleOwner) { state ->
+        viewModel.recordState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 RecordState.Stopped -> {
+                    requireActivity().stopService(
+                        Intent(requireContext(), HRService::class.java)
+                    )
                     binding.btSubmit.text = requireContext().getText(R.string.start)
                     binding.tvStartRecord.visibility = View.VISIBLE
                     binding.chScatterChart.visibility = View.INVISIBLE
                     binding.tvRate.text = requireContext().getText(R.string.no_records)
                     binding.ivStartRecord.visibility = View.VISIBLE
+                    binding.tvWaitingForResult.visibility = View.GONE
+                    binding.tvWaitingForResult.stopAnimation()
                 }
                 RecordState.Ongoing -> {
                     binding.btSubmit.text = requireContext().getText(R.string.stop)
                     binding.tvStartRecord.visibility = View.GONE
                     binding.chScatterChart.visibility = View.VISIBLE
                     binding.ivStartRecord.visibility = View.GONE
+                    binding.btSubmit.text = requireContext().getText(R.string.stop)
+                    binding.tvWaitingForResult.visibility = View.GONE
+                    binding.tvWaitingForResult.stopAnimation()
+                }
+                RecordState.Waiting -> {
+                    askForPermission()
+                    binding.btSubmit.text = requireContext().getText(R.string.start)
+                    binding.tvStartRecord.visibility = View.INVISIBLE
+                    binding.chScatterChart.visibility = View.INVISIBLE
+                    binding.ivStartRecord.visibility = View.INVISIBLE
+                    binding.tvRate.text = requireContext().getText(R.string.no_records)
+                    binding.btSubmit.text = requireContext().getText(R.string.stop)
+                    binding.tvWaitingForResult.visibility = View.VISIBLE
+                    binding.tvWaitingForResult.startAnimation()
                 }
                 else -> Unit
             }
         }
 
-        //TODO Only for test should move to view model
-        hrUseCase.receiveLatestHeartRateUpdate().asLiveData().observe(viewLifecycleOwner) {
-            if (it.isNotEmpty())
-                Log.d(TAG, "Record: ${it.last().record} TimeStamp: ${it.last().timestamp}")
-        }
+
 
 
         binding.btSubmit.apply {
@@ -169,22 +182,11 @@ class HeartRateFragment : Fragment() {
             )
 
             //TODO Observe for real hr censor values
-            var job: Job? = null
+
             setOnClickListener {
 
-                askForPermission()
 
-                when (recordState.value) {
-                    RecordState.Stopped -> job = lifecycleScope.launch {
-                        startRecording()
-                    }
-                    RecordState.Ongoing -> {
-                        job?.cancel()
-                        fakeData.value = mutableListOf()
-                    }
-                    else -> Unit
-                }
-                switchRecordState()
+                viewModel.switchRecordState()
             }
         }
     }
@@ -194,37 +196,11 @@ class HeartRateFragment : Fragment() {
         return LineDataSet(list, "Gravity fluctuation").apply {
             color = requireContext().getColor(R.color.purple_primary)
             lineWidth = 3F
-            mode = LineDataSet.Mode.CUBIC_BEZIER
+            mode = LineDataSet.Mode.STEPPED
             setDrawCircles(false)
             valueFormatter = ChartValueFormatter()
         }
     }
-
-    //TODO Move function to view model
-    private fun switchRecordState() {
-        when (recordState.value) {
-            RecordState.Stopped -> {
-                recordState.value = RecordState.Ongoing
-            }
-            RecordState.Ongoing -> {
-                recordState.value = RecordState.Stopped
-            }
-            else -> Unit
-        }
-    }
-
-    //TODO Test function delete when receive actual data
-    private suspend fun startRecording() {
-
-        entries.forEach {
-            val newList = fakeData.value?.toMutableList() ?: mutableListOf()
-            newList.add(it)
-            fakeData.value = newList
-            delay(1000)
-        }
-        switchRecordState()
-    }
-
 
     private fun askForPermission() {
         permissionLauncher.launch(android.Manifest.permission.BODY_SENSORS)

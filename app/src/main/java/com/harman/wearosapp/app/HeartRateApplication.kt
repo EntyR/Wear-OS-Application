@@ -1,10 +1,7 @@
 package com.harman.wearosapp.app
 
 import android.app.Application
-import com.harman.wearosapp.app.di.censorModule
-import com.harman.wearosapp.app.di.dataBaseModule
-import com.harman.wearosapp.app.di.dataModule
-import com.harman.wearosapp.app.di.useCaseModule
+import com.harman.wearosapp.app.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -18,7 +15,8 @@ class HeartRateApplication: Application() {
                 dataBaseModule,
                 dataModule,
                 censorModule,
-                useCaseModule
+                useCaseModule,
+                viewModelModule
             )
         }
 

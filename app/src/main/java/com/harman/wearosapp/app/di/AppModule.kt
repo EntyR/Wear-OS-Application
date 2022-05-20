@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.health.services.client.HealthServices
 import androidx.room.Room
 import com.harman.wearosapp.app.other.DATABASE_NAME
+import com.harman.wearosapp.app.ui.heart_rate_screen.HeartRateViewModel
 import com.harman.wearosapp.data.dao.IHRDao
 import com.harman.wearosapp.data.data_source.HealthServicesManager
 import com.harman.wearosapp.data.db.HRDataBase
@@ -13,6 +14,7 @@ import com.harman.wearosapp.domain.use_cases.HRUseCase
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 fun providesDatabase(application: Application): HRDataBase {
@@ -28,6 +30,11 @@ fun providesHRDao(database: HRDataBase): IHRDao {
 val dataBaseModule = module {
     single { providesDatabase(androidApplication()) }
     single { providesHRDao(get()) }
+}
+val viewModelModule = module {
+    viewModel {
+        HeartRateViewModel(get())
+    }
 }
 
 val dataModule = module {

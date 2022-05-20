@@ -110,5 +110,21 @@
         app:layout_constraintVertical_bias="0.49"
         tools:textSize="16sp" />
 
+    <com.harman.wearosapp.app.view.WaitingDotsTextView
+        android:id="@+id/tvWaitingForResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoSizeTextType="uniform"
+        android:visibility="gone"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="start|center_vertical"
+        android:lineSpacingExtra="3dp"
+        android:text="@string/syncing"
+        android:textColor="@color/purple_primary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:textSize="16sp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
