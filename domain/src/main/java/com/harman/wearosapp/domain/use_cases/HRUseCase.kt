@@ -11,5 +11,7 @@ class HRUseCase(private val repository: IHealthRepository) {
 
     fun receiveLatestHeartRateUpdate() = repository.getValueFromDb()
 
+    suspend fun deletePreviousValue() = repository.deletePreviousValue()
+
 
 }

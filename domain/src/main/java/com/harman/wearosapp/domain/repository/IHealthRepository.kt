@@ -7,4 +7,5 @@ interface IHealthRepository {
     suspend fun saveHRValueToDb(hrRecord: HRRecordModel)
     fun getHRCensorFlow(): Flow<List<Double>>
     fun getValueFromDb(): Flow<List<HRRecordModel>>
+    suspend fun deletePreviousValue()
 }

@@ -32,4 +32,7 @@ class HealthRepository(val dataSource: HealthServicesManager, val hrDao: IHRDao)
             }
         }
 
+    override suspend fun deletePreviousValue() {
+        hrDao.deleteAllRecords()
+    }
 }
