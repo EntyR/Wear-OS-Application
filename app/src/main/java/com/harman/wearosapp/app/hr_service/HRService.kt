@@ -33,7 +33,7 @@ class HRService : LifecycleService(), KoinComponent {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-
+        isAlive = true
         return START_STICKY
     }
 
@@ -92,7 +92,15 @@ class HRService : LifecycleService(), KoinComponent {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        isAlive = false
+    }
+
     companion object {
         const val TAG = "HRService"
+
+        var isAlive = false
+            private set
     }
 }

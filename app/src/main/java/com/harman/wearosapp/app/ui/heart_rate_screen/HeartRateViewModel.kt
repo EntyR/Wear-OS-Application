@@ -2,6 +2,7 @@ package com.harman.wearosapp.app.ui.heart_rate_screen
 
 import androidx.lifecycle.*
 import com.github.mikephil.charting.data.Entry
+import com.harman.wearosapp.app.hr_service.HRService
 import com.harman.wearosapp.app.other.getSecondsFromMillis
 import com.harman.wearosapp.domain.use_cases.HRUseCase
 
@@ -9,7 +10,10 @@ class HeartRateViewModel(
     private val hrUseCase: HRUseCase
 ) : ViewModel() {
 
-    private val _recordState = MutableLiveData(RecordState.Stopped)
+    private val _recordState = MutableLiveData(
+        if (HRService.isAlive) RecordState.Waiting
+        else RecordState.Stopped
+    )
     val recordState: LiveData<RecordState> = _recordState
 
 
