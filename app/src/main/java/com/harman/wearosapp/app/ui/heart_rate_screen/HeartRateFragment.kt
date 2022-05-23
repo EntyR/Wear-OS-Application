@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -22,14 +23,19 @@ import com.harman.wearosapp.app.R
 import com.harman.wearosapp.app.databinding.FragmentHeartRateBinding
 import com.harman.wearosapp.app.hr_service.HRService
 import com.harman.wearosapp.app.other.ChartValueFormatter
+import com.harman.wearosapp.domain.use_cases.HRUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
 class HeartRateFragment : Fragment() {
 
 
     private lateinit var binding: FragmentHeartRateBinding
+
+    //TODO move to view model later on
+    private val hrUseCase: HRUseCase by inject()
 
     //TODO Test values observe value from view model later on
     private val fakeData = MutableLiveData<List<Entry>>()
@@ -143,6 +149,13 @@ class HeartRateFragment : Fragment() {
             }
         }
 
+        //TODO Only for test should move to view model
+        hrUseCase.receiveLatestHeartRateUpdate().asLiveData().observe(viewLifecycleOwner) {
+            if (it.isNotEmpty())
+                Log.d(TAG, "Record: ${it.last().record} TimeStamp: ${it.last().timestamp}")
+        }
+
+
         binding.btSubmit.apply {
             val params = layoutParams as ConstraintLayout.LayoutParams
 
@@ -219,6 +232,8 @@ class HeartRateFragment : Fragment() {
 
 
     companion object {
+
+        const val TAG = "HeartRateFragment"
 
         @JvmStatic
         fun newInstance() = HeartRateFragment()
