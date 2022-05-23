@@ -17,5 +17,8 @@
     <string name="no_records">---</string>
     <string name="heart_rate_cd">Heart Rate</string>
     <string name="start_record_cd">Start Record</string>
+    <string name="hr_service_notification_channel_name">HR Channel</string>
+    <string name="hr_service_notification_tittle">Heart Rate Record</string>
+    <string name="hr_service_notification_description">Recording Heart Rate</string>
 
 </resources>
