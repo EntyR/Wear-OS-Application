@@ -20,5 +20,6 @@
     <string name="hr_service_notification_channel_name">HR Channel</string>
     <string name="hr_service_notification_tittle">Heart Rate Record</string>
     <string name="hr_service_notification_description">Recording Heart Rate</string>
+    <string name="syncing">Syncing</string>
 
 </resources>

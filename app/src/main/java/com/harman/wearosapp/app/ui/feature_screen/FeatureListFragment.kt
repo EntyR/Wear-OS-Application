@@ -1,5 +1,6 @@
 package com.harman.wearosapp.app.ui.feature_screen
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +15,10 @@ import androidx.wear.widget.WearableLinearLayoutManager
 import com.harman.wearosapp.app.R
 import com.harman.wearosapp.app.adapter.FeatureListAdapter
 import com.harman.wearosapp.app.databinding.FragmentAppFeatureListBinding
+import com.harman.wearosapp.app.ui.heart_rate_screen.HeartRateActivity
+import com.harman.wearosapp.app.ui.hr_export_screen.ExportActivity
 import com.harman.wearosapp.domain.model.FeatureModel
+import java.lang.IllegalArgumentException
 import kotlin.math.abs
 
 
@@ -73,11 +77,12 @@ class FeatureListFragment : Fragment() {
     }
 
     private fun startActivity(destinationID: Int) {
-        when (destinationID) {
-            Destinations.HRRecord.destinationId -> {
-
-            }
+        val intent =  when (destinationID) {
+            Destinations.HRRecord.destinationId -> Intent(requireContext(), HeartRateActivity::class.java)
+            Destinations.HRExport.destinationId -> Intent(requireContext(), ExportActivity::class.java)
+            else -> throw IllegalArgumentException("Destination doesn't exist")
         }
+        startActivity(intent)
     }
 
 }

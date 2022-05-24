@@ -33,7 +33,7 @@ class HRService : LifecycleService(), KoinComponent {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-
+        isAlive = true
         return START_STICKY
     }
 
@@ -75,6 +75,10 @@ class HRService : LifecycleService(), KoinComponent {
 
         startForeground(NOTIFICATION_ID, notification.build())
 
+        lifecycleScope.launchWhenCreated {
+            hrUseCase.deletePreviousValue()
+        }
+
         hrUseCase.receiveHeartRateCensorMeasurement().asLiveData().observe(this) {
             lifecycleScope.launch(dispatcher) {
                 hrUseCase.saveHRRecord(
@@ -88,7 +92,15 @@ class HRService : LifecycleService(), KoinComponent {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        isAlive = false
+    }
+
     companion object {
         const val TAG = "HRService"
+
+        var isAlive = false
+            private set
     }
 }
