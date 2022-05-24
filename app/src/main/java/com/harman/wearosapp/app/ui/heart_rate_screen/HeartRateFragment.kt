@@ -91,6 +91,13 @@ class HeartRateFragment : Fragment() {
                 bottom = screenHeight / 40,
                 right = screenHeight / 20
             )
+            viewModel.heartIconState.observe(viewLifecycleOwner){
+                when (it) {
+                    HeartIconState.Full -> setImageResource(R.drawable.heart_rate_icon_full)
+                    HeartIconState.Inline -> setImageResource(R.drawable.heart_rate_icon_empty)
+                    else -> Unit
+                }
+            }
         }
 
         binding.chScatterChart.apply {
@@ -102,8 +109,8 @@ class HeartRateFragment : Fragment() {
             legend.isEnabled = false
 
 
-            axisLeft.axisMaximum = 200f
-            axisLeft.axisMinimum = 40f
+            startChartYBoundsUpdates()
+            animateY(1000)
 
             val layoutParam = layoutParams as ConstraintLayout.LayoutParams
             layoutParam.height = (screenHeight / 2.5).toInt()
@@ -117,8 +124,13 @@ class HeartRateFragment : Fragment() {
 
             binding.chScatterChart.data = LineData(getDataSet(list))
 
+            viewModel.updateChartYBounds(
+                list.maxOf { it.y },
+                list.minOf { it.y }
+            )
             binding.chScatterChart.xAxis.axisMaximum = list.last().x + 10 - list.size
             binding.chScatterChart.xAxis.axisMinimum = list.first().x - 1
+            viewModel.switchHeartIconState()
 
             if (list.size > 1) {
                 binding.tvRate.text = list.last().y.toInt().toString()
@@ -181,16 +193,20 @@ class HeartRateFragment : Fragment() {
                 screenHeight / 25,
             )
 
-            //TODO Observe for real hr censor values
-
             setOnClickListener {
-
-
                 viewModel.switchRecordState()
             }
         }
     }
 
+    private fun startChartYBoundsUpdates() {
+        viewModel.chartBounds.observe(viewLifecycleOwner) {
+            binding.chScatterChart.axisLeft.apply {
+                axisMaximum = it.yMax
+                axisMinimum = it.yMin
+            }
+        }
+    }
 
     private fun getDataSet(list: List<Entry>): LineDataSet {
         return LineDataSet(list, "Gravity fluctuation").apply {

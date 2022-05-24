@@ -16,6 +16,36 @@ class HeartRateViewModel(
     )
     val recordState: LiveData<RecordState> = _recordState
 
+    private val _chartBounds: MutableLiveData<ChartBounds> = MutableLiveData()
+    val chartBounds: LiveData<ChartBounds> = _chartBounds
+
+    private val _heartIconState: MutableLiveData<HeartIconState> = MutableLiveData()
+    val heartIconState: LiveData<HeartIconState> = _heartIconState
+
+    fun switchHeartIconState(){
+        when(heartIconState.value){
+            HeartIconState.Full -> _heartIconState.value = HeartIconState.Inline
+            HeartIconState.Inline -> _heartIconState.value = HeartIconState.Full
+            else -> _heartIconState.value = HeartIconState.Inline
+        }
+    }
+
+    fun updateChartYBounds(maxBounds: Float, minBounds: Float) {
+        val updateMax = chartBounds.value?.yMax?.let {
+            it > maxBounds
+        }?: true
+        if (updateMax)
+            _chartBounds.value = ChartBounds(
+                maxBounds + 5, minBounds - 5
+            )
+        val updateMin = chartBounds.value?.yMin?.let {
+            it < minBounds
+        }?: true
+        if (updateMin)
+            _chartBounds.value = ChartBounds(
+                maxBounds +5, minBounds -5
+            )
+    }
 
     fun receiveHeartRateMeasurement() =
         hrUseCase.receiveLatestHeartRateUpdate().asLiveData().map { list ->
