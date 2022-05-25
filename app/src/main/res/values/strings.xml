@@ -21,5 +21,6 @@
     <string name="hr_service_notification_tittle">Heart Rate Record</string>
     <string name="hr_service_notification_description">Recording Heart Rate</string>
     <string name="syncing">Syncing</string>
+    <string name="failure_message">Data Export is failed\ntry again</string>
 
 </resources>
