@@ -1,0 +1,17 @@
+name: code-quality
+run-name: ${{ github.actor }} is starting code quality check
+on: [push]
+jobs:
+  check-code-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: npm install
+      - name: Run ESLint
+        run: npm run lint
+      - name: Run Prettier
+        run: npm run prettier
